@@ -1,7 +1,8 @@
 //We need to get the information with the url. So first, i define the url variable 
 const url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
 
-//then, i create three variables to storage the information outside. with this, i can create the chart functions
+//Then, i create three variables to storage the 
+// information outside. with this, i can create the chart functions
 var info_samples=[];
 var info_metadata=[];
 var info_ids=[];
@@ -17,21 +18,15 @@ d3.json(url).then((data) => {
     
     //console.log("y:",info_samples);
 
-    // in this step, i select the dropdown menu element from HTML DOM and asign this to the variable "dropdownMenu"
+    // in this step, i select the dropdown menu element 
+    //from HTML DOM and assign this to the variable "dropdownMenu"
     let dropdownMenu = d3.select("#selDataset");
+    // with this for, i add a option element for each "id" and
+    // push the value of the id.
+    for(i=0;i<info_ids.length;i++){
+        dropdownMenu.append("option").text(info_ids[i]).attr("value",info_ids[i])
+    }
     
-    //with this, i select every "option" element that there are in "selDataset"
-    dropdownMenu.selectAll("option")
-    //with this, i asociate every element of info_ids with every option element in "selDataset".
-    //we know that there are not option element, so the function "data", create a option element for each element on info_ids
-    .data(info_ids)
-    // in this step, i add o create the element option in selDataset.
-    .enter().append("option")
-    // here i am adding the text content in each option element
-    .text(id=>id)
-    // here i am adding the value of every info_ids element in every option element in the DOM 
-    .attr("value",id=>id)
-
     // let info_x = returndatasamples("940");
     // console.log("x:",info_x)
 
@@ -40,15 +35,17 @@ d3.json(url).then((data) => {
         bargraph("940");
         bubblegraph("940");
         gaugegraph("940");
-        add_panelbody("940");
+        add_panelbody("940"); 
     }
     //i call the function init to print the charts
     init()   
 
 })
 
-//i define the function optionChanged to update the charts and the data when i choose another Subject ID.
-// with this function i call to getdata function to get the information of the new Subject ID.
+//I define the function optionChanged to update the 
+//charts and the data when i choose another Subject ID.
+//With this function i call to getdata function to get
+// the information of the new Subject ID.
 function optionChanged(id){
     return getdata(id);
  }
@@ -62,11 +59,13 @@ function getdata(value){
     gaugegraph(value);
     // here, i delete all element that there are in the panel.
     d3.selectAll(".panel-body>p").remove()
-    // here, i call the function to create the element in the panel that show me the information of the subject that i select.
+    // here, i call the function to create the element 
+    // in the panel that show me the information of the subject that i select.
     add_panelbody(value);
 }
 
-//here, i create this two functions "returndatasamples" and "returnmetadata" to get the data of the subject selected.
+//here, i create this two functions "returndatasamples" and 
+//"returnmetadata" to get the data of the subject selected.
 function returndatasamples (sample_id) {
     for (i=0;i<info_samples.length;i++){
         if (sample_id == info_samples[i].id){
@@ -83,7 +82,8 @@ function returnmetadata (sample_id) {
     }
 }
 
-// here i crate the function to plot the bar graph every time that i want to select a new subjet id.
+// here i crate the function to plot the bar graph every 
+//time that i want to select a new subjet id.
 function bargraph (id){
     let bar_data = returndatasamples(id);
     let data_resume = bar_data.otu_ids.map(function(ids){
@@ -100,15 +100,15 @@ function bargraph (id){
     
     let layout ={
         title:"Top 10 OTUs",
-        height:700,
-        width:600
+        
     }
 
     //con esto lo que hago es mostrar el grafico en la pagina.
     Plotly.newPlot("bar", data1,layout);
 }
 
-// here i crate the function to plot the bubble graph every time that i want to select a new subjet id.
+// here i crate the function to plot the bubble graph every 
+// time that i want to select a new subjet id.
 function bubblegraph(id){
     let bubble_data = returndatasamples(id);
     let trace2={
@@ -135,7 +135,8 @@ function bubblegraph(id){
     Plotly.newPlot("bubble", data2,layout2)
 }
 
-// here i crate the function to plot the gauge graph every time that i want to select a new subjet id.
+// here i crate the function to plot the gauge graph every 
+// time that i want to select a new subjet id.
 function gaugegraph (id){
     let gauge_data = returnmetadata(id);
     let trace3 ={
@@ -166,7 +167,8 @@ function gaugegraph (id){
     Plotly.newPlot("gauge", data3, layout3);
 }
 
-// here i crate the function to add elements in the panel body every time that i want to select a new subjet id.
+// here i crate the function to add elements in the panel 
+// body every time that i want to select a new subjet id.
 function add_panelbody (id){
     let panelbody_data= returnmetadata(id);
     d3.select(".panel-body").append("p").text(`Id: ${panelbody_data.id}`);
