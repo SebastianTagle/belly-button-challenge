@@ -94,6 +94,7 @@ function bargraph (id){
     let trace1= {
         y: data_resume.slice(0,10).reverse(),
         x: bar_data.sample_values.slice(0,10).reverse(),
+        text:bar_data.otu_labels.slice(0,10).reverse(),
         type: "bar",
         orientation: "h" };
     let data1=[trace1];
